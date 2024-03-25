@@ -1,0 +1,10 @@
+Kitsune (v1.08 "Kurama")
+
+Hard-fork of the 'Til Death theme.
+- Attempts to remove all sprites, slimming the theme down to needed code only
+- Optimizes the theme for keyboard only.
+  - All mouse-related code is removed.
+
+If you find a bug, send the log file of your current session in the Discord server.
+
+<3 kurulen
