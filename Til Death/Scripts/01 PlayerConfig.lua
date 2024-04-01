@@ -73,6 +73,7 @@ local defaultConfig = {
 	JudgeType = 1,
 	AvgScoreType = 0,
 	GhostScoreType = 1,
+	Restrictor = 1,
 	DisplayPercent = true,
 	DisplayMean = false,
 	TargetTracker = true,

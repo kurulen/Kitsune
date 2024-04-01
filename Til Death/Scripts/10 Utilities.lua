@@ -25,6 +25,17 @@ ShortDiffToFancyLUT = {
    ["ED"] = "Edit",
 }
 
+NSToJudgeTierEnum = {
+   TapNoteScore_W1=1,
+   HoldNoteScore_Held=1,
+   TapNoteScore_W2=2,
+   TapNoteScore_W3=3,
+   TapNoteScore_W4=4,
+   TapNoteScore_W5=5,
+   TapNoteScore_Miss=6,
+   HoldNoteScore_MissedHold=6
+}
+
 LampEnum = {
    [1] = "AAAAA",
    [2] = "AAAA",
@@ -45,6 +56,34 @@ LampEnum = {
    [99] = "",
 }
 
+-- I LOVE STICKING ENUMS EVERYWHERE, FUCK ~autumn
+OverscanPreferenceToHumanNameEnum = {
+   ["CenterImageAddHeight"] = "Expand/contract screen vertically ",
+   ["CenterImageAddWidth"] = "Expand/contract screen horizontally ",
+   ["CenterImageTranslateX"] = "Move screen left/right ",
+   ["CenterImageTranslateY"] = "Move screen up/down ",
+}
+
+SystemMessageTranslationEnum = {
+   ["Reloaded metrics"] = "Reloaded metrics and translations",
+   ["Mute actions on"] = "Actions muted",
+   ["Mute actions off"] = "Actions unmuted",
+}
+
+function zip(...)
+  local arrays, ans = {...}, {}
+  local index = 0
+  return
+    function()
+      index = index + 1
+      for i,t in ipairs(arrays) do
+        if type(t) == 'function' then ans[i] = t() else ans[i] = t[index] end
+        if ans[i] == nil then return end
+      end
+      return unpack(ans)
+    end
+end
+
 function simpleGetMSD(steps)
    return steps:GetMSD(getCurRateValue(), 1)
 end
@@ -52,6 +91,16 @@ end
 function sleep(time)
    local curtime = os.time()
    while os.time() - curtime <= time do end
+end
+
+function RestartGameplay()
+   local ok, _ = pcall(function()
+	 local ts = SCREENMAN:GetTopScreen()
+	 ts:SetPrevScreenName("ScreenStageInformation"):Cancel()
+   end)
+   if not ok then
+      ReportScriptError("Could not restart!")
+   end
 end
 
 -- i can be as inefficient as i want, you're not my dad
@@ -65,6 +114,54 @@ function GetStepsFromChartKey(ck)
       end
    end
    return nil
+end
+
+-- Seeds the PRNG with a random (almost) 32-bit signed number.
+function SeedPRNG()
+   local seed = math.random(1,2147483646)
+   MersenneTwister.Seed(seed)
+end
+
+-- A slightly more fair version of math.random.
+function RandomNumber(low, high)
+   -- implemented as per the docs:
+   -- https://quietly-turning.github.io/Lua-For-SM5/LuaAPI?engine=StepMania&version=5.0.12#Namespaces-MersenneTwister-Random
+   if high then
+      -- return number between low and high
+      local choice = clamp(
+	 notShit.ceil(MersenneTwister.Random(low,high * 10)) % high,
+	 low,
+	 high
+      )
+      return choice
+   elseif low then
+      -- return number between 1 and low
+      local choice = clamp(
+	 notShit.ceil(MersenneTwister.Random(low * 10)) % low,
+	 1,
+	 low
+      )
+      return choice
+   else
+      -- return number between 0 and 1
+      return MersenneTwister.Random()
+   end
+end
+
+function shuffle(x)
+   for i = #x, 2, -1 do
+      local j = RandomNumber(i)
+      x[i], x[j] = x[j], x[i]
+   end
+   return x
+end
+
+function TranslateSystemMessage(msg)
+   local trmsg = SystemMessageTranslationEnum[msg]
+   if trmsg then
+      return trmsg
+   end
+   return msg
 end
 
 local function GetBestGradeForSong(song)
@@ -91,6 +188,8 @@ local function GetBestGradeForSong(song)
     return gradeTier
 end
 
+-- Converts seconds into Steam-like hours.
+-- Mainly used in BGAnimations/_PlayerInfo.lua for "hours played".
 function SecondsToVagueHours(secs)
    return notShit.round(secs * 0.0002777778, 2)
 end

@@ -1,0 +1,8 @@
+// Option row configuration for ScreenNewOptions.
+// Look at https://github.com/kurulen/Kitsune/wiki/OptionRowsTxt
+//   for more information.
+// ~autumn
+---
+L~Display
+P~SoundVolume	CustomNumberInput
+---

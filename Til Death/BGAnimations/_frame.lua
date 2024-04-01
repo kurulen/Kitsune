@@ -65,7 +65,8 @@ t[#t+1] = Def.Quad {
       self:zoomto(SCREEN_WIDTH, 14)
    end,
    BeginCommand = function(self)
-      if string.find(SCREENMAN:GetTopScreen():GetName(), "ScreenColor.*") then
+      if string.find(SCREENMAN:GetTopScreen():GetName(), "ScreenColor.*")
+      or string.find(SCREENMAN:GetTopScreen():GetName(), "ScreenNewOptions") then
 	 self:visible(false)
       end
    end

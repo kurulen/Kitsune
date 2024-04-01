@@ -8,6 +8,8 @@ LastPress = { false, false }
 MultiLoops = 0
 CurrentVolume = PREFSMAN:GetPreference("SoundVolume")
 
+PrevChoices = {}
+
 EventLoop = function(event)
    local CtrlPressed = INPUTFILTER:IsControlPressed()
    local ShiftPressed = INPUTFILTER:IsShiftPressed()

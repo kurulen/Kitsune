@@ -2,12 +2,11 @@ local t = Def.ActorFrame {}
 
 CurrentTidbit = "ScreenInit"
 
--- seed the PRNG
-math.random()
+SeedPRNG()
 
-local nymTab = QUOTES.Minanyms
+local nymTab = shuffle(QUOTES.Minanyms)
 
-local text = "Created by " .. nymTab[math.random(#nymTab)]
+local text = "Created by " .. nymTab[RandomNumber(#nymTab)]
 
 t[#t + 1] =
 	Def.Quad {

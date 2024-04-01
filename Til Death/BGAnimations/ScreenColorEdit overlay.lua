@@ -425,12 +425,13 @@ t[#t+1] = Def.ActorFrame {
 			self:settext("Saved Color")
 			self:halign(0):valign(0)
 			self:zoom(0.4)
+			self:addy(20)
 		end
 	},
 	LoadFont("Common Large") .. {
 		InitCommand = function(self)
 			self:addy(-(colorBoxHeight/4))
-			self:settext("Current Color")
+			self:settext("Color Preview")
 			self:halign(0):valign(0)
 			self:zoom(0.4)
 		end

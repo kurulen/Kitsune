@@ -114,7 +114,7 @@ local t =
 
 		spaceNotefieldCols(MovableValues.NotefieldSpacing)
 
-		self:diffusealpha(1)
+		self:diffusealpha(0.75)
 	end,
 	DoneLoadingNextSongMessageCommand = function(self)
 		-- put notefield y pos back on doneloadingnextsong because playlist courses reset this for w.e reason -mina
@@ -187,7 +187,7 @@ end
 -- anything that isn't yet in loadactors has been moved
 t[#t + 1] = LoadActor("elements/default")
 
--- practice mode
+-------------------------------------------------------------------------------------------------------------- practice mode
 -- this should really be moved, so
 -- TODO: move this to elements
 -- ~kurulen

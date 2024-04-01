@@ -17,14 +17,14 @@ local function genKeyboard()
       end,
       PressBitsChangedMessageCommand = function(self, params)
 	 if params.Bits[1] == true then
-	    self:GetChild("Key5.1"):GetChild("Quad"):diffuse(getMainColor("highlight"))
+	    self:GetChild("Key5.1"):GetChild("Quad"):diffuse(Brightness(getMainColor("highlight"), 0.75))
 	 else
-	    self:GetChild("Key5.1"):GetChild("Quad"):diffuse(getMainColor("positive"))
+	    self:GetChild("Key5.1"):GetChild("Quad"):diffuse(Brightness(getMainColor("positive"), 0.75))
 	 end
 	 if params.Bits[2] == true then
-	    self:GetChild("Key4.1"):GetChild("Quad"):diffuse(getMainColor("highlight"))
+	    self:GetChild("Key4.1"):GetChild("Quad"):diffuse(Brightness(getMainColor("highlight"), 0.75))
 	 else
-	    self:GetChild("Key4.1"):GetChild("Quad"):diffuse(getMainColor("positive"))
+	    self:GetChild("Key4.1"):GetChild("Quad"):diffuse(Brightness(getMainColor("positive"), 0.75))
 	 end
       end
    }
@@ -138,7 +138,7 @@ local function genKeyboard()
 	       InitCommand = function(self)
 		  self:xy( base+(spacing*key), (base+(spacing*row)) * 2)
 		  self:zoomto(base, base*2)
-		  self:diffuse(getMainColor("positive"))
+		  self:diffuse(Brightness(getMainColor("positive"), 0.75))
 		  self:visible(false)
 	       end
 	    },
@@ -225,7 +225,7 @@ t[#t + 1] = Def.ActorFrame {
 	SystemMessageMessageCommand = function(self, params)
 	   -- prevents our backoff loop from annoying the user
 	        if not string.match(params.Message, "Connection to '.*' successful.") then
-		   self:GetChild("Text"):settext(params.Message)
+		   self:GetChild("Text"):settext(TranslateSystemMessage(params.Message))
 		   self:playcommand("On")
 		   if params.NoAnimate then
 		      self:finishtweening()
@@ -341,7 +341,7 @@ t[#t+1] = Def.ActorFrame {
 	       PreviousVolume = CurrentVolume
 	       self:diffusealpha(1)
 	       self:GetChild("TopFill"):cropbottom(CurrentVolume)
-	       self:sleep(0.1):diffusealpha(0)
+	       self:sleep(0.15):diffusealpha(0)
 	    end
       end)
    end,

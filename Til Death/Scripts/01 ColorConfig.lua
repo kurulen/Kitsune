@@ -123,7 +123,10 @@ local defaultConfig = {
 		cover = "#333333",
 		bpmText = "#4CBB17",
 		heightText = "#FFFFFF"
-	}
+	},
+	gameplay = {
+	   background = "#000000"
+	},
 }
 
 colorConfig = create_setting("colorConfig", "colorConfig.lua", defaultConfig, -1)
@@ -274,6 +277,8 @@ function bySkillRange(x)
 		return color("#ddaa00")
 	elseif x <= 25 then
 		return color("#ff6666")
+	elseif x <= 0 then
+	        return color("#999999")
 	else
 		return color("#c97bff")
 	end

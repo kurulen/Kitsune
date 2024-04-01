@@ -190,10 +190,12 @@ t[#t + 1] = Def.ActorFrame {
 	      self:diffuse(Brightness(nonButtonColor, 0.95))
 	   end,
 	   SetCommand = function(self)
-	      local nyms = NCRQUOTES
-	      local tabChoice = math.random(#nyms)
+	      SeedPRNG()
+
+	      local nyms = shuffle(NCRQUOTES)
+	      local tabChoice = RandomNumber(#nyms)
 	      local nymTab = nyms[tabChoice]
-	      local text = nymTab[math.random(#nymTab)]
+	      local text = nymTab[RandomNumber(#nymTab)]
 	      
 	      self:settext(text)
 	   end
