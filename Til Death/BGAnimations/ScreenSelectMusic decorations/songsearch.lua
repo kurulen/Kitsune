@@ -94,14 +94,23 @@ local function search(wheel, query)
 	    -- if we want the title, subtitle, stepartist, or artist,
 	    --   then using >= or <= is unreasonable, obviously
 	    if opcode >= 9 and opcode <= 12 then
-	       local various
-	       if opcode == 9 then various = songs[y]:GetDisplayMainTitle() end
-	       if opcode == 10 then various = songs[y]:GetDisplaySubTitle() end
-	       if opcode == 11 then various = songs[y]:GetOrTryAtLeastToGetSimfileAuthor() end
-	       if opcode == 12 then various = songs[y]:GetDisplayArtist() end
-	       if not various then various = "" end
-	       if string.match(string.lower(various), target..".*") then
-		  cdts[#cdts+1] = y
+	       local matcher = function(opcode, songs, cdts, translit)
+		  local various
+		  if opcode == 9 then various = (translit and songs[y]:GetTranslitMainTitle() or songs[y]:GetDisplayMainTitle()) end
+		  if opcode == 10 then various = (translit and songs[y]:GetTranslitSubTitle() or songs[y]:GetDisplaySubTitle()) end
+		  if opcode == 11 then various = songs[y]:GetOrTryAtLeastToGetSimfileAuthor() end
+		  if opcode == 12 then various = (translit and songs[y]:GetTranslitArtist() or songs[y]:GetDisplayArtist()) end
+		  if not various then various = "" end
+		  if string.match(string.lower(various), target..".*") then
+		     cdts[#cdts+1] = y
+		     return true, songs, cdts
+		  else
+		     return false, songs, cdts
+		  end
+	       end
+	       result, songs, cdts = matcher(opcode, songs, cdts, false)
+	       if result == false then
+		  result, songs, cdts = matcher(opcode, songs, cdts, true)
 	       end
 	    elseif opcode == 13 then
 	       -- length filter

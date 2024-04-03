@@ -47,20 +47,22 @@ end
 
 return Def.ActorFrame {
    JudgmentMessageCommand = function(self, params)
-      local jdg = nil
-      if params.TapNoteScore == nil then
-	 jdg = NSToJudgeTierEnum[params.HoldNoteScore]
-      else
-	 jdg = NSToJudgeTierEnum[params.TapNoteScore]
-      end
-      JudgePoints[jdg] = JudgePoints[jdg] + 1
-
-      -- If the judgment is a CB, increment the CBs value.
-      if jdg > 4 then
-	 CBs = CBs + 1
-      end
-
-      -- Run restart eval function depending on mode.
-      ModeFuncs[Mode]()
+      pcall(function(params, CBs, Mode, ModeFuncs)
+	    local jdg = nil
+	    if params.TapNoteScore == nil then
+	       jdg = NSToJudgeTierEnum[params.HoldNoteScore]
+	    else
+	       jdg = NSToJudgeTierEnum[params.TapNoteScore]
+	    end
+	    JudgePoints[jdg] = JudgePoints[jdg] + 1
+	    
+	    -- If the judgment is a CB, increment the CBs value.
+	    if jdg > 4 then
+	       CBs = CBs + 1
+	    end
+	    
+	    -- Run restart eval function depending on mode.
+	    ModeFuncs[Mode]()
+      end, params, CBs, Mode, ModeFuncs)
    end
 }
